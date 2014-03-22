@@ -1,6 +1,7 @@
 import webapp2
 import cgi
 import string
+import re
 
 
 def escape_html(s):
@@ -60,11 +61,13 @@ user_sign_up_form = """
 		username
 		<input type="text" name="username" value="%(username)s">
 	</label>
+	%(username_error)s
 	<br>
 	<label>
 		password
 		<input type="password" name="password" value="%(password)s">
 	</label>
+	%(password_error)s
 	<br>
 	<label>
 		verify
@@ -75,7 +78,7 @@ user_sign_up_form = """
 		email
 		<input type="text" name="email" value="%(email)s"/>
 	</label>
-
+	%(email_error)s
 	<br>
 	<input type="submit"/>
 </form>
@@ -83,33 +86,60 @@ user_sign_up_form = """
 
 
 class UserSignUp(webapp2.RequestHandler):
+	USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+	PASSWORD_RE = re.compile("^.{3,20}$")
+	EMAIL_RE = re.compile("^[\S]+@[\S]+\.[\S]+$")
 
-	def serve_sign_up_form(self, username='', password='', verify='', email=''):
+	def serve_sign_up_form(self, username='', password='', verify='', email='', username_error='', password_error='',email_error=''):
 		self.response.out.write(user_sign_up_form %{
 			"username" : username,
 			"password" : password,
 			"verify" : verify,
-			"email" : email
+			"email" : email,
+			"username_error" : username_error,
+			"password_error" : password_error,
+			"email_error" : email_error
 			})
 
 	def get(self):
 		self.serve_sign_up_form()
+	def is_valid_name(self, username):
+		return UserSignUp.USER_RE.match(username)
+	def is_valid_password(self, password):
+		return UserSignUp.PASSWORD_RE.match(password)
+	def is_valid_email(self, email):
+		return UserSignUp.EMAIL_RE.match(email)
 
 	def post(self):
-		username = self.response.get('username')
-		password = self.response.get('password')
-		verify = self.response.get('verify')
-		email = self.response.email('email')
+		username = self.request.get('username')
+		password = self.request.get('password')
+		verify = self.request.get('verify')
+		email = self.request.get('email')
 
-		if username and is_valid_name(username) and password and verify and verify == password:
-			if email and is_valid_email(email):
-					self.redirect('/signup/success' + '?username=' + username)
-			else:
-				error
-			
 
+
+		input_is_valid = True
+		email_error = ''
+		username_error = ''
+		password_error = ''
+		email_error = ''
+
+		if  not self.is_valid_name(username):
+			username_error = "Invalid Username"
+			input_is_valid = False
+
+		if not(self.is_valid_email(email)):
+			email_error = "Invalid Email"
+			input_is_valid = False
+
+		if not self.is_valid_password(password) or password != verify:
+			password_error = "Your passwords do not match or are invalid"
+			input_is_valid = False
+
+		if input_is_valid:
+			self.redirect('/welcome' + '?username=' + escape_html(username))
 		else:
-			error
+			self.serve_sign_up_form(username, '', '', email, username_error, password_error, email_error)
 
 
 
@@ -117,11 +147,12 @@ class UserSignUp(webapp2.RequestHandler):
 
 class SignUpSuccess(webapp2.RequestHandler):
 	def get(self):
-		pass
+		username = self.request.get('username')
+		self.response.write("welcome," + username)
 
 
 
 
 
 
-app = webapp2.WSGIApplication([('/', MainPage), ('/signup', UserSignUp), ('/signup/success', SignUpSuccess)], debug=True)
+app = webapp2.WSGIApplication([('/', MainPage), ('/signup', UserSignUp), ('/welcome', SignUpSuccess)], debug=True)
