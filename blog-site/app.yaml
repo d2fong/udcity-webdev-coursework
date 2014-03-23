@@ -23,6 +23,9 @@ handlers:
 - url: /stylesheets
   static_dir:stylesheets
 
+- url: /templates
+  static_dir: templates
+
 - url: /.admin/.*
   script: admin.app
   login: admin
