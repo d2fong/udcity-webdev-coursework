@@ -1,0 +1,29 @@
+
+application: Dylan_Fong_Blog
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+#project dependencies
+
+libraries:
+- name: webapp2
+  version: latest
+
+
+handlers:
+- url: /
+  script: blog.app
+- url: /index\.html
+  script: blog.app
+
+- url: /stylesheets
+  static_dir:stylesheets
+
+- url: /.admin/.*
+  script: admin.app
+  login: admin
+
+- url: /.*
+  script: not_found.app
