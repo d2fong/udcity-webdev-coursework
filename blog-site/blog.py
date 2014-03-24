@@ -17,6 +17,10 @@ class Handler(webapp2.RequestHandler):
 
 class MainPage(Handler):
     def get(self):
-        self.write("Hi!")
+        self.render("index.html")
 
-app = webapp2.WSGIApplication([('/', MainPage)], debug=True)
+class NewPost(Handler):
+	def get(self):
+		self.render("new_post.html")
+
+app = webapp2.WSGIApplication([('/', MainPage), ('/newpost', NewPost)], debug=True)
