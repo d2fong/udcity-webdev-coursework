@@ -21,7 +21,7 @@ handlers:
 - url: /index\.html
   script: blog.app
 
-- url: /stylesheets
+- url: /stylesheets/
   static_dir: stylesheets
 
 - url: /templates/
