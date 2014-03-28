@@ -2,6 +2,9 @@ import os
 import webapp2
 import jinja2
 from models import Post
+from google.appengine.ext import db
+
+
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
 
@@ -32,11 +35,12 @@ class NewPost(Handler):
 		content = self.request.get('content')
 
 		if content and subject:
-			post = Post(subject = subject, content = content)
+			post = Post(subject=subject, content=content)
 			key = post.put()
-			self.redirect("/" + str(key.id())
-		else:
-			re render the template with title/content and a error message
+			self.redirect("/posts/%d" %  + key.id())
+
+# 		# else:
+# 		# 	re render the template with title/content and a error message
 
 class AboutPage(Handler):
 	def get(self):
@@ -46,11 +50,15 @@ class PortfolioPage(Handler):
 	def get(self):
 		self.render("index.html")
 
-class BlogPost(Handler):
+class SinglePagePost(Handler):
 
-	def get(self, blog_id):
+	def get(self, post_id):
 		
-		posts = Blog.get_by_id(blog_id())
-		self.render("index.html", posts=[s])
+		post = Post.get_by_id(int(post_id))
+		self.render("index.html", posts = [post])
 
-app = webapp2.WSGIApplication([(r'/posts/(\d+)', BlogPost), (r'/about', AboutPage), (r'/portfolio', PortfolioPage), (r'/', MainPage), (r'/newpost', NewPost)], debug=True)
+app = webapp2.WSGIApplication([(r'/posts/(\d+)', SinglePagePost), 
+								(r'/about', AboutPage), 
+								(r'PortfolioPage', PortfolioPage),
+								(r'/', MainPage),
+								(r'/newpost', NewPost)], debug=True)
