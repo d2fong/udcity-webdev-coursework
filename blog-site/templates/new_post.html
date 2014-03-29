@@ -3,17 +3,18 @@
 <html>
     <head>
         <title>Dylan's Blog - Create A New Post</title>
-        <link type="text/css" rel="stylesheet" href="../stylesheets/main.css" />
+        <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
     </head>
     <body>
         <h1>Create a New Post</h1>
         <form method="post">
             <label>
-                <div>Subject</div> <input type="text" name="subject">
+                <div>Subject</div> <input type="text" name="subject" value={{ subject }}>
             </label>
             <br>
+            <div class="error">{{ error }}</div>
             <label>
-            	<div>Content</div><input type="textarea" name="content">
+            	<div>Content</div> <textarea name="content" value={{ content }}> </textarea>
            	</label>
            	<input type="submit">
         </form>
