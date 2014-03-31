@@ -24,7 +24,8 @@ class Handler(webapp2.RequestHandler):
 
 class MainPage(Handler):
 	def get(self):
-		self.render("index.html")
+		posts = posts = Post.all().order('-created').run(limit=10)
+		self.render("index.html", posts=posts)
 
 class NewPost(Handler):
 	def get(self):
@@ -38,9 +39,11 @@ class NewPost(Handler):
 			post = Post(subject=subject, content=content)
 			key = post.put()
 			self.redirect("/posts/%d" %  + key.id())
+		else:
+			self.render("new_post.html", subject = subject, 
+				content = content, 
+				error="A subject title and content is required")
 
-# 		# else:
-# 		# 	re render the template with title/content and a error message
 
 class AboutPage(Handler):
 	def get(self):
