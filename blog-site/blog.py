@@ -25,7 +25,7 @@ class Handler(webapp2.RequestHandler):
 class MainPage(Handler):
 	def get(self):
 		posts = posts = Post.all().order('-created').run(limit=10)
-		self.render("index.html", posts=posts)
+		self.render("frontpage.html", posts=posts)
 
 class NewPost(Handler):
 	def get(self):
@@ -47,18 +47,18 @@ class NewPost(Handler):
 
 class AboutPage(Handler):
 	def get(self):
-		self.render("index.html")
+		self.render("frontpage.html")
 
 class PortfolioPage(Handler):
 	def get(self):
-		self.render("index.html")
+		self.render("frontpage.html")
 
 class SinglePagePost(Handler):
 
 	def get(self, post_id):
 		
 		post = Post.get_by_id(int(post_id))
-		self.render("index.html", posts = [post])
+		self.render("frontpage.html", posts = [post])
 
 app = webapp2.WSGIApplication([(r'/posts/(\d+)', SinglePagePost), 
 								(r'/about', AboutPage), 

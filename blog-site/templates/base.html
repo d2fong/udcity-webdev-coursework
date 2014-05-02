@@ -1,21 +1,78 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+	<head>
+		<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/pure-min.css">
+		<!-- <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" /> -->
 
-  <title>Dylan Fong - Blog</title>
-</head>
 
-<body>
-  <a href="/blog" class="main-title">
-    Dylan Fong
-  </a>
 
-  <div id="content">
-  {% block content %}
-  {% endblock %}
-  </div>
-</body>
+  
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="css/main-grid-old-ie.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="/stylesheets/main-grid.css">
+    <!--<![endif]-->
+  
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="css/layouts/blog-old-ie.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="/stylesheets/blog.css">
+    <!--<![endif]-->
+
+		<title>Dylan Fong - Blog</title>
+	</head>
+
+	<body>
+	<div id="layout" class="pure-g">
+	    <div class="sidebar pure-u-1 pure-u-med-1-4">
+	        <div class="header">
+	            <hgroup>
+	                <h1 class="brand-title">Dylan Fong</h1>
+	            </hgroup>
+
+	            <nav class="nav">
+	                <ul class="nav-list">
+	                    <li class="nav-item">
+	                        <a class="pure-button" href="/">Home</a>
+	                    </li>
+	                    <li class="nav-item">
+	                        <a class="pure-button" href="/about">about</a>
+	                    </li>
+	                    <li class="nav-item">
+	                        <a class="pure-button" href="/portfolio">portfolio</a>
+	                    </li>
+	                    <li class="nav-item">
+	                        <a class="pure-button" href="/gallery">gallery</a>
+	                    </li>
+	                </ul>
+	            </nav>
+	        </div>
+	    </div>
+
+	    <div class="content pure-u-1 pure-u-med-3-4">
+	        <div>
+	            <div>
+	            {% block content %}
+	            {% endblock %}
+	            </div>
+
+	            <div class="footer">
+	                <div class="pure-menu pure-menu-horizontal pure-menu-open">
+	                    <ul>
+	                        <li><a href="http://purecss.io/">About</a></li>
+	                        <li><a href="http://twitter.com/yuilibrary/">Twitter</a></li>
+	                        <li><a href="http://github.com/yui/pure/">GitHub</a></li>
+	                    </ul>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+
+	</body>
+
 
 </html>
 
